@@ -453,7 +453,7 @@ export const uploadCarerId = async (req, res) => {
 
     // save file path in DB
     await Carer.update(
-      { id_document_url: filePath },
+      { id_document: filePath },
       { where: { id: req.user.id } }
     );
 
