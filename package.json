@@ -1,0 +1,48 @@
+{
+  "name": "carer-platform-backend",
+  "version": "1.0.0",
+  "description": "MVP backend API for UK Carer Finder Platform using Node.js, Express, and PostgreSQL on Render",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate": "node src/config/db.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "postgresql",
+    "sequelize",
+    "carer-platform",
+    "api"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.2.1",
+    "firebase-admin": "^13.6.0",
+    "form-data": "^4.0.5",
+    "google-auth-library": "^10.5.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mailgun.js": "^12.1.1",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.10",
+    "pg": "^8.13.1",
+    "postgres": "^3.4.7",
+    "sequelize": "^6.37.4",
+    "socket.io": "^4.8.1",
+    "stripe": "^19.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
