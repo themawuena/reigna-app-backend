@@ -1,10 +1,13 @@
 import express from "express";
-import { registerCarer, loginCarer, getCarerProfile, getAllCarers, getCarersByPostcode, updateCarerDetails, updateCarerFcmToken, getWeeklyEarnings, uploadIdDocument, } from "../controllers/carerController.js";
+import { registerCarer, loginCarer, getCarerProfile, getAllCarers, getCarersByPostcode, updateCarerDetails, updateCarerFcmToken, getWeeklyEarnings, } from "../controllers/carerController.js";
 import { authMiddleware } from "../middleware/auth.js";
-import { upload } from "../middleware/upload.js";
 import { forgotPassword } from "../controllers/carerController.js";
-import uploadId from "../middleware/uploadId.js";
+import multer from "multer";
+import { uploadCarerId } from "../controllers/carerController.js";
 
+
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
 
@@ -31,8 +34,8 @@ router.get("/earnings/weekly", authMiddleware, getWeeklyEarnings);
 router.post(
   "/upload-id",
   authMiddleware,
-  uploadId.single("id_document"),
-  uploadIdDocument
+  upload.single("id_document"),
+  uploadCarerId
 );
 
 

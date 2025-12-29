@@ -10,6 +10,8 @@ import nodemailer from "nodemailer";
 import { sendMail } from "../utils/email.js";
 import Booking from "../models/Booking.js";
 import { Op } from "sequelize";
+import { supabase } from "../config/supabase.js";
+import { v4 as uuid } from "uuid";
 
 
 dotenv.config();
@@ -425,30 +427,48 @@ export const getWeeklyEarnings = async (req, res) => {
   }
 };
 
-
-export const uploadIdDocument = async (req, res) => {
+export const uploadCarerId = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const carer = await Carer.findByPk(req.user.id);
-    if (!carer) {
-      return res.status(404).json({ message: "Carer not found" });
-    }
+    const fileExt = req.file.originalname.split(".").pop();
+    const filePath = `ids/${req.user.id}-${uuid()}.${fileExt}`;
 
-    carer.id_document = `/uploads/id_documents/${req.file.filename}`;
-    await carer.save();
+    // upload to bucket
+    const { error } = await supabase.storage
+      .from("carer-ids")
+      .upload(filePath, req.file.buffer, {
+        contentType: req.file.mimetype,
+        upsert: false,
+      });
+
+    if (error) throw error;
+
+    // generate signed URL (private access)
+    const { data: signed } = await supabase.storage
+      .from("carer-ids")
+      .createSignedUrl(filePath, 60 * 60 * 24 * 7); // 7 days
+
+    // save file path in DB
+    await Carer.update(
+      { id_document_url: filePath },
+      { where: { id: req.user.id } }
+    );
 
     res.status(200).json({
-      message: "ID document uploaded successfully",
-      id_document: carer.id_document,
+      message: "ID uploaded successfully",
+      url: signed.signedUrl,
+      path: filePath,
     });
-  } catch (error) {
-    console.error("❌ ID upload error:", error);
-    res.status(500).json({ message: "Server error" });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ message: "Failed to upload ID" });
   }
 };
+
+
 
 
 
