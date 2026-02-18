@@ -469,6 +469,25 @@ export const uploadCarerId = async (req, res) => {
 };
 
 
+export const getCarerIdDocument = async (req, res) => {
+  try {
+    const carer = await Carer.findByPk(req.user.id);
+
+    if (!carer?.id_document_url) {
+      return res.status(404).json({ message: "No ID uploaded" });
+    }
+
+    const { data } = await supabase.storage
+      .from("carer-ids")
+      .createSignedUrl(carer.id_document_url, 60 * 10); // 10 minutes
+
+    res.json({ url: data.signedUrl });
+  } catch {
+    res.status(500).json({ message: "Could not fetch ID" });
+  }
+};
+
+
 
 
 
