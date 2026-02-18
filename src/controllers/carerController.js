@@ -78,7 +78,7 @@ export const loginCarer = async (req, res) => {
     const token = jwt.sign(
       { id: carer.id, role: "carer" },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "30d" }
     );
 
     return res.json({
