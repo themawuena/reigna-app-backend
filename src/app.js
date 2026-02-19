@@ -8,6 +8,7 @@ import clientRoutes from "./routes/clientRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import volunteerRoutes from "./routes/volunteerRoutes.js";
 import path from "path";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/volunteers", volunteerRoutes);
 
 
 app.use("/uploads", express.static(path.resolve("uploads")));
